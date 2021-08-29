@@ -1,7 +1,7 @@
 const searchValue = document.getElementById("searchValue")
 const form = document.getElementById("formularioCreacion")
 
-class Personaje {
+class Character {
 
   constructor (name,origen,species,img,id,gender) {
     this.name = name;
@@ -14,21 +14,42 @@ class Personaje {
 
 }
 
-class Create {
+class CreateInDom {
 
-  static createCard = (abueloParam,personaje) => {
+  static createCard = (where,character) => {
     const padre = document.createElement("article")
     const img = document.createElement('img')
-    padre.setAttribute("species",`${ personaje.origin?.name.slice(0,6) || personaje.origen } - ${personaje.species}`)
-    padre.setAttribute("gender",`${personaje.gender}`)
-    img.setAttribute("src",`${personaje.image || personaje.img}`)
-    padre.textContent = `${personaje.name}`
+    padre.setAttribute("species",`${ character.origin?.name.slice(0,6) || character.origen } - ${character.species}`)
+    padre.setAttribute("gender",`${character.gender}`)
+    img.setAttribute("src",`${character.image || character.img}`)
+    padre.textContent = `${character.name}`
     padre.appendChild(img)
     padre.className = "contenedor_inf"
-    padre.id = `${personaje.id}`
+    padre.id = `${character.id}`
     img.classList = "contenedor_i"
-    const abuelo = document.querySelector(`${abueloParam}`)
+    const abuelo = document.querySelector(`${where}`)
     Insert.insertarEnElDom(abuelo,padre)
+  }
+
+  static createLi = (result) => {
+    const ul = document.getElementById("result_ul")
+    ul.innerHTML = ""
+    for(let i = 0; i < result.length; i++) {
+      const li = document.createElement("li")
+      const img = document.createElement("img")
+      img.setAttribute("src",`${result[i].image}`)
+      img.classList = 'result_i'
+      li.classList = 'result_li'
+      li.id = `${result[i].id}`
+      li.setAttribute("name",result[i].name)
+      Insert.insertarEnElDom(li,img)
+      li.addEventListener("click", (e) => {
+        this.getResult(e.currentTarget.id)
+        searchValue.value = ""
+        ul.innerHTML = ""
+      })
+      Insert.insertarEnElDom(ul,li)
+    }
   }
 
 }
@@ -36,10 +57,10 @@ class Create {
 class Insert {
 
   static callFour = async () => {
-    const llamado = await fetch("https://rickandmortyapi.com/api/character/1,2,3,4,5")
-    const personajes = await llamado.json()
-    for(let i = 0; i < personajes.length ; i++) {
-      Create.createCard(".contenedor",personajes[i])
+    const callApi = await fetch("https://rickandmortyapi.com/api/character/1,2,3,4,5")
+    const characters = await callApi.json()
+    for(let i = 0; i < characters.length ; i++) {
+      CreateInDom.createCard(".contenedor",characters[i])
     }
   }
   static insertarEnElDom = (padre,hijo) => {
@@ -54,42 +75,21 @@ class Search {
     const search = searchValue.value
     try
     {
-      const llamado = await fetch(`https://rickandmortyapi.com/api/character/?name=${search}&status=alive`)
-      const result = await llamado.json()
-      this.showSearch(result.results)
+      const callApi = await fetch(`https://rickandmortyapi.com/api/character/?name=${search}&status=alive`)
+      const result = await callApi.json()
+      CreateInDom.createLi(result.results)
     }
     catch{
       throw new Error ("No existe personaje")
     }
   }
 
-  static showSearch = (result) => {
-    const ul = document.getElementById("result_ul")
-    ul.innerHTML = ""
-    for(let i = 0; i < result.length; i++) {
-      const li = document.createElement("li")
-      const img = document.createElement("img")
-      img.setAttribute("src",`${result[i].image}`)
-      img.classList = 'result_i'
-      li.classList = 'result_li'
-      li.id = `${result[i].id}`
-      li.setAttribute("name",result[i].name)
-      li.appendChild(img)
-      li.addEventListener("click", (e) => {
-        this.getResult(e.currentTarget.id)
-        searchValue.value = ""
-        ul.innerHTML = ""
-      })
-      Insert.insertarEnElDom(ul,li)
-    }
-  }
-
   static getResult = async (id) => {
     try
     {
-      const llamado = await fetch(`https://rickandmortyapi.com/api/character/${id}`)
-      const result = await llamado.json()
-      Create.createCard(".contenedor",result)
+      const callApi = await fetch(`https://rickandmortyapi.com/api/character/${id}`)
+      const result = await callApi.json()
+      CreateInDom.createCard(".contenedor",result)
     }
     catch{
       alert("error")
@@ -97,17 +97,17 @@ class Search {
   }
 }
 
-class Creacion {
+class Creation {
 
   static submitSearch = (event) => {
-    const Formulario = new FormData(form)
+    const Form = new FormData(form)
     event.preventDefault()
     event.target.reset()
-    this.creacionPersonaje(Formulario)
+    this.creationCustom(Form)
   } 
 
-  static creacionPersonaje = (formData) => {
-    const newCharacter = new Personaje(
+  static creationCustom = (formData) => {
+    const newCharacter = new Character(
       formData.get("name"),
       formData.get("origin"),
       formData.get("species"),
@@ -115,21 +115,20 @@ class Creacion {
       123,
       formData.get("gender"),
     )
-    Create.createCard(".contenedor",newCharacter)
+    CreateInDom.createCard(".contenedor",newCharacter)
   }
-
 
 }
 
 Insert.callFour()
 
-const newPersonaje = new Personaje (
+const newPersonaje = new Character (
 "Test","Tierra", "Humano" ,
 "https://finde.latercera.com/wp-content/uploads/2020/06/Amor-de-gata-2-700x450.jpg"
 ,121,"Mujer"
 )
 
-Create.createCard(".contenedor",newPersonaje)
+CreateInDom.createCard(".contenedor",newPersonaje)
 
 searchValue.addEventListener("keyup",Search.getSearch)
 form.addEventListener("submit",Creacion.submitSearch)
