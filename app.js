@@ -44,7 +44,7 @@ class CreateInDom {
       li.setAttribute("name",result[i].name)
       Insert.insertarEnElDom(li,img)
       li.addEventListener("click", (e) => {
-        this.getResult(e.currentTarget.id)
+        Search.getResult(e.currentTarget.id)
         searchValue.value = ""
         ul.innerHTML = ""
       })
@@ -131,4 +131,4 @@ const newPersonaje = new Character (
 CreateInDom.createCard(".contenedor",newPersonaje)
 
 searchValue.addEventListener("keyup",Search.getSearch)
-form.addEventListener("submit",Creacion.submitSearch)
+form.addEventListener("submit",Creation.submitSearch)
