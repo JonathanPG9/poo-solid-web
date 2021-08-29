@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App with POO</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav class="navegador">
+      <ul class="navegador-ul">
+        <li>
+          Home
+        </li>
+        <li>
+          Search
+        </li>
+        <li>
+          App
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div class="bienvenida">
+      Bienvenido
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cum pariatur recusandae odit id, porro laboriosam expedita tempore error, hic odio quaerat voluptate, aut asperiores vero sapiente libero blanditiis nesciunt praesentium.
+      </p>
+    </div>
+    <div class="contenedor"></div>
+    <article class="search">
+      Buscar Personaje
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, deserunt? Voluptatum, at? Perferendis illo nam soluta incidunt, possimus eos molestias facere veritatis laborum nemo exercitationem perspiciatis, quasi, voluptatum doloribus odit.
+      </p>
+      <div  id="content">
+        <label for="searchValue">Ingresar Nombre</label>
+        <input type="text" id="searchValue" name="searchValue" >
+      </div>
+    </article>
+      <div class="search_results">
+        <ul id="result_ul"></ul>
+      </div>
+      <article id="content_form"> 
+        Crea tu personaje
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptates ea, porro libero ipsam rem repudiandae iusto ab exercitationem in fugit vero doloribus repellat enim ratione, nesciunt molestias sint! Soluta, neque?
+        </p>
+        <form  id="formularioCreacion">
+          <input type="text" name="name" required placeholder="Nombre">
+          <input type="text" name="origin" required placeholder="Vive en">
+          <input type="text" name="gender" required placeholder="Genero">
+          <input type="text" name="species" required placeholder="Especie">
+          <label for="">
+            Imagen (ingrese una URL)
+          </label>
+          <input type="url" name="image"  required >
+          <button type="submit">Listo</button>
+        </form>
+      </article>
+  </main>
+  <footer>
+    <ul>
+      <li>
+        Jonathan
+      </li>
+    </ul>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
